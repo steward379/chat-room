@@ -1,13 +1,20 @@
+// utils/redisClient.js
 const { createClient } = require('redis');
 
 const redisClient = createClient({
-  url: 'redis://localhost:6379' // 根據你的 Redis 伺服器地址和端口進行修改
+  url: process.env.REDIS_URL || 'redis://localhost:6379'
 });
 
 redisClient.on('error', (err) => {
   console.error('Redis Client Error', err);
 });
 
-redisClient.connect();
+(async () => {
+  try {
+    await redisClient.connect();
+  } catch (err) {
+    console.error('Error connecting to Redis', err);
+  }
+})();
 
 module.exports = redisClient;

@@ -1,3 +1,4 @@
+//src/services/chatService.js
 const prisma = require('../config/prisma');
 
 const chatService = {

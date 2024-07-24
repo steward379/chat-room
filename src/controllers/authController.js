@@ -1,10 +1,14 @@
+//src/controllers/authController.js
+
 const userService = require('../services/userService');
 const tokenUtils = require('../utils/tokenUtils');
 
 const authController = {
   async register(req, res) {
     try {
-      const { username, password, email, nickname, avatar } = req.body;
+      // const { username, password, email, nickname, avatar } = req.body;
+      const { username, password, email, nickname } = req.body;
+      const avatar = req.body.avatar || null;
       const existingUser = await userService.findUserByUsername(username);
       
       if (existingUser) {
@@ -34,6 +38,11 @@ const authController = {
     } catch (error) {
       res.status(500).json({ message: 'Error logging in', error: error.message });
     }
+  },
+  
+  async logout(req, res) {
+    // 模擬登出邏輯，實際上應該將 token 加入黑名單
+    res.json({ message: 'Logout successful' });
   }
 };
 

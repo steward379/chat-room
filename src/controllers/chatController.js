@@ -1,3 +1,5 @@
+//src/controllers/chatController.js
+
 const chatService = require('../services/chatService');
 
 const chatController = {

@@ -1,3 +1,4 @@
+//src/middlewares/authMiddleware.js
 const tokenUtils = require('../utils/tokenUtils');
 
 const authMiddleware = (req, res, next) => {

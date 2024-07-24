@@ -1,9 +1,11 @@
+//src/services/userService.js
+
 const prisma = require('../config/prisma');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const userService = {
   async createUser(userData) {
-    const { username, password, email, nickname, avatar } = userData;
+    const { username, password, email, nickname, avatar = null } = userData;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
