@@ -4,29 +4,41 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
+    "dev": "concurrently \"vite\" \"nodemon src/app.js\"",
+    "preview": "vite preview --outDir dist",
+    "build": "vite build && cp -r dist/* public/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "chatroom",
+    "websocket"
+  ],
+  "author": "Steward Tsou",
   "license": "ISC",
-  "description": "",
+  "description": "a chatroom",
   "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.4",
     "prisma": "^5.17.0"
   },
   "dependencies": {
     "@prisma/client": "^5.17.0",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "redis": "^4.6.15",
     "sequelize": "^6.37.3",
+    "vite": "^5.3.4",
     "ws": "^8.18.0"
   }
 }

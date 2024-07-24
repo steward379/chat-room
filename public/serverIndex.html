@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #chat { height: 400px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+        #message, #nickname { width: 70%; padding: 5px; margin-bottom: 10px; }
+        button { padding: 5px 10px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Chat Room</h1>
+    <div id="nicknameForm">
+        <input type="text" id="nickname" placeholder="Enter your nickname">
+        <button onclick="setNickname()">Join Chat</button>
+    </div>
+    <div id="chatRoom" class="hidden">
+        <div id="chat"></div>
+        <input type="text" id="message" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        const socket = new WebSocket('ws://' + window.location.host);
+        const chat = document.getElementById('chat');
+        const messageInput = document.getElementById('message');
+        const nicknameInput = document.getElementById('nickname');
+        const nicknameForm = document.getElementById('nicknameForm');
+        const chatRoom = document.getElementById('chatRoom');
+        let myNickname = '';
+
+        socket.onopen = function(e) {
+            console.log("Connected to server");
+            loadMessages();
+        };
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.type === 'nicknameSet') {
+                myNickname = data.nickname;
+                nicknameForm.classList.add('hidden');
+                chatRoom.classList.remove('hidden');
+                messageInput.placeholder = `You (${myNickname}): Type a message...`;
+            } else if (data.type === 'chat') {
+                appendMessage(data);
+            } else if (data.type === 'error') {
+                alert(data.message);
+            }
+        };
+
+        function loadMessages() {
+            fetch('/messages')
+                .then(response => response.json())
+                .then(messages => {
+                    chat.innerHTML = ''; // Clear existing messages
+                    messages.forEach(msg => {
+                        appendMessage({
+                            id: msg.id,
+                            nickname: msg.user.nickname,
+                            message: msg.content,
+                            created_at: msg.created_at
+                        });
+                    });
+                });
+        }
+
+        function appendMessage(data) {
+            const message = document.createElement('p');
+            const time = data.created_at ? new Date(data.created_at).toLocaleTimeString() : new Date().toLocaleTimeString();
+            if (data.nickname === myNickname) {
+                message.innerHTML = `<strong>You</strong> (${time}): ${data.message}`;
+                message.style.color = 'blue';
+            } else {
+                message.innerHTML = `<strong>${data.nickname}</strong> (${time}): ${data.message}`;
+            }
+            chat.appendChild(message);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function setNickname() {
+            const nickname = nicknameInput.value.trim();
+            if (nickname) {
+                socket.send(JSON.stringify({ type: 'setNickname', nickname: nickname }));
+            }
+        }
+
+        function sendMessage() {
+            if (messageInput.value) {
+                socket.send(JSON.stringify({ type: 'chat', message: messageInput.value }));
+                messageInput.value = '';
+            }
+        }
+
+        // Allow sending message with Enter key
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Allow setting nickname with Enter key
+        nicknameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                setNickname();
+            }
+        });
+    </script>
+</body>
+</html>
