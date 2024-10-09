@@ -1,17 +1,17 @@
-**#** Chat Room Project / 聊天室專案
+# Chat Room Project / 聊天室專案
 
 這個專案是即時聊天室應用程式，讓使用者能夠即時通訊。
 整合了 Node.js/Express, WebSocket, 快取 Redis, ORM Prisma, 資料庫 PostgresQL 等等。前端使用 React + Vite。並以 Docker 打包。
 
 This project is a real-time chat room application that allows users to communicate instantly. It combines modern web technologies to create a seamless and efficient chatting experience.
 
-**###** Key Features:
+### Key Features:
 **-** Real-time messaging using WebSocket
 **-** User authentication and authorization
 **-** Persistent storage of chat history
 **-** Scalable architecture with potential for caching and message queuing
 
-**###** Technology Stack:
+### Technology Stack:
 **-****Frontend:******
 **-** React: A JavaScript library for building user interfaces
 **-** Vite: Next generation frontend tooling for faster development and building
@@ -32,13 +32,12 @@ This project is a real-time chat room application that allows users to communica
 **-** concurrently: Run multiple commands concurrently
 
 
-**###** 主要特點：
+### Features
 **-** 使用 WebSocket 進行即時消息傳遞
 **-** 用戶認證和授權
 **-** 聊天歷史的永久存儲
 **-** 可擴展的架構，具有緩存和消息隊列的潛力
 
-**###** 技術棧：
 **-****前端：******
 **-** React：用於構建用戶界面的 JavaScript 庫
 **-** Vite：下一代前端工具，用於更快的開發和構建
@@ -52,7 +51,7 @@ This project is a real-time chat room application that allows users to communica
 **-****認證：******
 **-** JSON Web Tokens (JWT)：用於安全的用戶認證
 **-** bcrypt：用於密碼哈希
-**-****緩存/消息隊列：******
+**-****快取 / 訊息佇列：******
 **-** Redis：內存數據結構存儲（潛在用途）
 **-****開發工具：******
 **-** nodemon：用於在開發過程中自動重啟 Node.js 應用程序
